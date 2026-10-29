@@ -1,0 +1,24 @@
+# Salman Yousufzai
+
+> Senior SEO specialist based in Karachi, Pakistan, with 5 years in SEO and 8 years in digital marketing. Offers SEO services (technical, on-page, off-page, local SEO, and GEO/AEO for AI search), blog and content writing, and web development with SEO (clean HTML websites and WordPress/Elementor pages). Works remotely with clients in the United States and worldwide.
+
+## Pages
+
+- [Home](https://theseospecialist.netlify.app/): Overview of services, results and the free SEO checker.
+- [Services](https://theseospecialist.netlify.app/services/): SEO services, blog and content writing, and web development with SEO.
+- [Results](https://theseospecialist.netlify.app/results/): Six anonymized case studies with figures from Google Search Console and Business Profiles.
+- [Free SEO Checker](https://theseospecialist.netlify.app/seo-checker/): Checks a live page's title, meta description, headings, word count, image alt text, indexing tags, schema, robots.txt, sitemap and Google PageSpeed scores.
+- [About](https://theseospecialist.netlify.app/about/): Experience, background and approach.
+- [Contact](https://theseospecialist.netlify.app/contact/): Request a free SEO review.
+
+## Documented results (client names withheld)
+
+- Marine retailer, Florida: organic clicks grew from 48 to 635 in one quarter after an audit was implemented.
+- Home services company, Manhattan: 326K impressions from a standing start, including 12.2K AI Overview impressions.
+- Restaurant group, Florida: direction requests up 600.1% year over year (Google's own calculation).
+- Smart home installer: PageSpeed 97 mobile and 100 desktop, and a crawl with zero issues.
+
+## Contact
+
+- Email: Salmannyousufzai@gmail.com
+- LinkedIn: https://www.linkedin.com/in/salman-yousufzai/
