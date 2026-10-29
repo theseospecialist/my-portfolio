@@ -384,3 +384,21 @@ footer a{color:#B6CCDB}
 /* basic check note */
 .basic-note{margin:14px 0 0;padding:12px 14px;border-radius:12px;background:#F4F1FF;color:#3E3A6B;font-size:14.5px}
 .basic-note a{color:var(--violet);font-weight:700}
+
+/* ---------- checker v3: severity-based issues ---------- */
+.sev-c{font-size:14px;font-weight:700;padding:5px 12px;border-radius:999px}
+.sev-c.critical,.sev.critical{background:#B4232A;color:#fff}
+.sev-c.high,.sev.high{background:#FDE6E7;color:#B4232A}
+.sev-c.medium,.sev.medium{background:#FFF1DA;color:#8A5200}
+.sev-c.low,.sev.low{background:#EEF1F5;color:#4A5768}
+.igroup{margin-top:24px}
+.igroup h4{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 4px;font-size:16px;font-weight:800;padding-bottom:8px;border-bottom:2px solid #EEF0F3}
+.igroup h4 span{font-size:13px;font-weight:600;color:var(--soft)}
+.issue{display:grid;grid-template-columns:88px 1fr;gap:14px;align-items:start;padding:12px 0;border-bottom:1px solid #F0F2F5}
+.sev{display:inline-block;text-align:center;font-size:12px;font-weight:800;border-radius:8px;padding:4px 6px;margin-top:2px}
+.issue b{display:block;font-size:15.5px;line-height:1.4}
+.issue span:not(.sev){display:block;color:var(--soft);font-size:14.5px;line-height:1.55;margin-top:3px}
+.passed{margin-top:22px;border-radius:14px;background:#F2FAF6;padding:12px 16px}
+.passed summary{cursor:pointer;font-weight:700;color:#0B7A5E}
+.passed ul{margin:10px 0 0;padding-left:20px;columns:2;font-size:14px;color:var(--soft)}
+@media (max-width:600px){.issue{grid-template-columns:1fr;gap:6px}.sev{justify-self:start}.passed ul{columns:1}}
