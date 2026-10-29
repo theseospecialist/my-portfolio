@@ -8,6 +8,8 @@
 - [Services](https://theseospecialist.netlify.app/services/): SEO services, blog and content writing, and web development with SEO.
 - [Results](https://theseospecialist.netlify.app/results/): Six anonymized case studies with figures from Google Search Console and Business Profiles.
 - [Free SEO Checker](https://theseospecialist.netlify.app/seo-checker/): Checks a live page's title, meta description, headings, word count, image alt text, indexing tags, schema, robots.txt, sitemap and Google PageSpeed scores.
+- [Blog](https://theseospecialist.netlify.app/blog/): Plain-English guides to SEO, GEO and content.
+- [What Is GEO?](https://theseospecialist.netlify.app/blog/what-is-geo-generative-engine-optimization/): How AI Overviews and ChatGPT choose sources, and 7 steps to get cited.
 - [About](https://theseospecialist.netlify.app/about/): Experience, background and approach.
 - [Contact](https://theseospecialist.netlify.app/contact/): Request a free SEO review.
 
