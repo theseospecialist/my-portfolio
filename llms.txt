@@ -1,14 +1,15 @@
-# Salman Yousufzai
+# Salman Yousufzai, Freelance SEO Consultant
 
-> Senior SEO specialist based in Karachi, Pakistan, with 5 years in SEO and 8 years in digital marketing. Offers SEO services (technical, on-page, off-page, local SEO, and GEO/AEO for AI search), blog and content writing, and web development with SEO (clean HTML websites and WordPress/Elementor pages). Works remotely with clients in the United States and worldwide.
+> Senior SEO specialist based in Karachi, Pakistan, with 5 years in SEO and 8 years in digital marketing, working remotely with businesses across the United States. Offers SEO services, local SEO and Google Business Profile management, technical SEO audits, AI search optimization (GEO and AEO), SEO content writing, SEO web development and white label SEO for agencies. Every project starts with a free SEO review and a fixed quote.
 
 ## Pages
 
-- [Home](https://theseospecialist.netlify.app/): Overview of services, results and the free SEO checker.
-- [Services](https://theseospecialist.netlify.app/services/): SEO services, blog and content writing, and web development with SEO.
-- [Results](https://theseospecialist.netlify.app/results/): Six anonymized case studies with figures from Google Search Console and Business Profiles.
-- [Free SEO Checker](https://theseospecialist.netlify.app/seo-checker/): Checks a live page's title, meta description, headings, word count, image alt text, indexing tags, schema, robots.txt, sitemap and Google PageSpeed scores.
-- [Blog](https://theseospecialist.netlify.app/blog/): Plain-English guides to SEO, GEO and content.
+- [Home](https://theseospecialist.netlify.app/): Freelance SEO consultant for US businesses, with services, documented results and two free tools.
+- [SEO Services](https://theseospecialist.netlify.app/services/): Monthly SEO, local SEO, technical SEO audits, AI search optimization (GEO), SEO content writing, SEO web development and white label SEO.
+- [SEO Case Studies](https://theseospecialist.netlify.app/results/): Six anonymized case studies with figures from Google Search Console and Google Business Profiles.
+- [Free SEO Checker](https://theseospecialist.netlify.app/seo-checker/): Audits a live page for meta title, meta description, canonical tag, H1, meta robots, schema markup, Open Graph tags, image alt text, robots.txt, XML sitemap and Core Web Vitals, and explains each SEO term.
+- [Free AI Visibility Checker](https://theseospecialist.netlify.app/ai-visibility-checker/): Tests whether ChatGPT, Perplexity, Claude and Google AI Overviews can reach, read and cite a page: robots.txt rules for 13 AI crawlers (including GPTBot, OAI-SearchBot and PerplexityBot), firewall blocks, nosnippet, JavaScript-only content, answer-first structure, schema and llms.txt.
+- [SEO Blog](https://theseospecialist.netlify.app/blog/): Plain-English guides to SEO, GEO and content.
 - [What Is GEO?](https://theseospecialist.netlify.app/blog/what-is-geo-generative-engine-optimization/): How AI Overviews and ChatGPT choose sources, and 7 steps to get cited.
 - [About](https://theseospecialist.netlify.app/about/): Experience, background and approach.
 - [Contact](https://theseospecialist.netlify.app/contact/): Request a free SEO review.
@@ -18,9 +19,11 @@
 - Marine retailer, Florida: organic clicks grew from 48 to 635 in one quarter after an audit was implemented.
 - Home services company, Manhattan: 326K impressions from a standing start, including 12.2K AI Overview impressions.
 - Restaurant group, Florida: direction requests up 600.1% year over year (Google's own calculation).
+- Coffee brand, Florida: 8.12K clicks at a 6.9% click-through rate on 118K impressions over six months.
 - Smart home installer: PageSpeed 97 mobile and 100 desktop, and a crawl with zero issues.
 
 ## Contact
 
 - Email: Salmannyousufzai@gmail.com
 - LinkedIn: https://www.linkedin.com/in/salman-yousufzai/
+- Location: Karachi, Pakistan (UTC+5), serving clients across the United States
