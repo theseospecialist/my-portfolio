@@ -207,7 +207,8 @@
         var modern=raster.filter(function(i){var s=(i.getAttribute('src')||i.getAttribute('data-src')||'').toLowerCase();return /\.(webp|avif)(\?|$)/.test(s)||(i.parentElement&&i.parentElement.tagName==='PICTURE'&&i.parentElement.querySelector('source[type*="webp"],source[type*="avif"]'))||/format=(webp|avif)|fm=(webp|avif)|auto=format|auto=compress/.test(s);}).length;
         if(modern/raster.length<.5)issue('Images','medium','Images Not in WebP or AVIF Format','Only '+modern+' of '+raster.length+' images use next-gen formats. Heavy JPEG and PNG files are the most common cause of slow pages on phones.');else pass('Next-gen image formats');
         var first=raster[0];
-        if(first&&first.getAttribute('loading')==='lazy')issue('Images','high','LCP Image Is Lazy-Loaded','The first image on the page is set to loading="lazy", which delays Largest Contentful Paint (LCP), a Core Web Vital.');
+        var h2f=doc.querySelector('h2'),aboveFold=first&&(!h2f||(first.compareDocumentPosition(h2f)&Node.DOCUMENT_POSITION_FOLLOWING));
+        if(first&&aboveFold&&first.getAttribute('loading')==='lazy')issue('Images','high','LCP Image Is Lazy-Loaded','The main image at the top of the page is set to loading="lazy", which delays Largest Contentful Paint (LCP), a Core Web Vital.');
         if(raster.length>4&&!raster.some(function(i){return i.getAttribute('loading')==='lazy';}))issue('Images','low','No Lazy Loading on Below-the-Fold Images','Images far down the page download before visitors need them, slowing the first view.');
       }
     }
