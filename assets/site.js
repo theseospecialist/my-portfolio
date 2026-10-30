@@ -55,3 +55,13 @@
     copy(addr).then(function(){toast('Email address copied: '+addr+'. If no email app opened, paste it into your email.');},function(){toast('Email me at '+addr);});
   });
 })();
+
+/* Services dropdown: click to open on touch screens, Escape or an outside click closes it */
+(function(){
+  var dds=document.querySelectorAll('.dd');if(!dds.length)return;
+  function shut(d,focus){d.classList.remove('open');var b=d.querySelector('.dd-btn');if(b){b.setAttribute('aria-expanded','false');if(focus)b.focus();}}
+  dds.forEach(function(d){var b=d.querySelector('.dd-btn');if(!b)return;
+    b.addEventListener('click',function(e){e.stopPropagation();var o=!d.classList.contains('open');d.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false');});});
+  document.addEventListener('click',function(e){dds.forEach(function(d){if(!d.contains(e.target))shut(d);});});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')dds.forEach(function(d){if(d.classList.contains('open'))shut(d,true);});});
+})();
