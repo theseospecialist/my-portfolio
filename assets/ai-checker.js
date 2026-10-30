@@ -201,7 +201,20 @@
   }
 
   /* ---------- rendering ---------- */
-  function score(issues){var P=issues.reduce(function(s,i){return s+SEV[i.sev].p;},0);return Math.max(0,Math.min(100,Math.round(100/(1+P/60))));}
+  /* Honest scoring: AI tools need content they can reach, read and trust, so every gap counts.
+     Critical problems cap the score below 40 and missing essentials keep it out of the top band. */
+  var DED={critical:25,high:10,medium:5,low:2};
+  function score(issues){
+    var raw=100,low=0,crit=0,hi=0;
+    issues.forEach(function(i){
+      if(i.sev==='low')low+=DED.low;else raw-=DED[i.sev];
+      if(i.sev==='critical')crit++;if(i.sev==='high')hi++;
+    });
+    raw-=Math.min(low,16);
+    if(crit)raw=Math.min(raw,40-(crit-1)*8);
+    if(hi>=3)raw=Math.min(raw,60);else if(hi>=1)raw=Math.min(raw,80);
+    return Math.max(3,Math.min(100,Math.round(raw)));
+  }
   function botTable(rows,probed){
     var h='<div class="tags"><h4>AI Crawler Access for This URL</h4>';
     rows.forEach(function(r){
@@ -222,7 +235,7 @@
     h+='<div class="sum-text"><h3>AI Visibility Score: '+grade+'</h3><p>'+esc(S.url)+'</p><div class="counts">';
     ['critical','high','medium','low'].forEach(function(k){if(cnt[k])h+='<span class="sev-c '+k+'">'+cnt[k]+' '+SEV[k].label+'</span>';});
     if(!issues.length)h+='<span class="c-ok">No issues found in this check</span>';
-    h+='</div></div></div>';
+    h+='</div><p class="score-how">How this score works: each issue lowers it by severity, any critical issue keeps it below 40, and missing essentials keep it out of the AI Ready band.</p></div></div>';
     h+='<p class="basic-note">This check reads the page the way AI crawlers do: raw HTML, no JavaScript. It measures whether AI systems can reach, read and quote this page. It does not query ChatGPT or Google, so it cannot show whether you are cited today. '+(S.note||'')+'</p>';
     h+=botTable(A.rows,S.probed);
     if(A.preview&&A.preview.a){h+='<div class="preview"><h4>What an AI Answer Would Likely Quote</h4><span class="q">The question this page answers (its H1)</span><blockquote><b>'+esc(cut(A.preview.q||'(no H1)',140))+'</b>'+esc(cut(A.preview.a,360))+'</blockquote></div>';}

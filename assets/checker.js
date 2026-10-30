@@ -10,7 +10,7 @@
 
   /* Optional: a free Google API key for PageSpeed Insights, restricted to your domain.
      Without it, Google's shared limit sometimes refuses the speed test. */
-  var PSI_KEY='';
+  var PSI_KEY='AIzaSyDkaO8FC-P3SK-uHYGrHcUCApSA0lEvjaQ';
   var SAMPLE_PAGES=10;
 
   var input=document.getElementById('chkUrl'),btn=document.getElementById('chkBtn');
@@ -74,7 +74,10 @@
   }
   function psi(url){
     var api='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='+encodeURIComponent(url)+'&strategy=mobile&category=performance&category=seo&category=accessibility&category=best-practices'+(PSI_KEY?'&key='+PSI_KEY:'');
-    return timed(api,90000).then(function(r){if(!r.ok)throw new Error('psi '+r.status);return r.json();});
+    function once(){return timed(api,90000).then(function(r){if(!r.ok){var e=new Error('psi '+r.status);e.status=r.status;throw e;}return r.json();});}
+    /* Google sometimes refuses or times out the first request; try once more before giving up */
+    return once().catch(function(e){if(e&&e.status&&e.status<500&&e.status!==429)throw e;return new Promise(function(res){setTimeout(res,4000);}).then(once);})
+      .then(function(j){if(!j||!j.lighthouseResult)throw new Error('psi empty');return j;});
   }
 
   /* ---------- single page analysis ---------- */
@@ -352,7 +355,25 @@
   /* ---------- scoring and rendering ---------- */
   var ST=null;
   var STL={good:'Good',check:'Check',miss:'Missing',info:'Info'};
-  function score(issues){var P=issues.reduce(function(s,i){return s+SEV[i.sev].p;},0);return Math.max(0,Math.min(100,Math.round(100/(1+P/60))));}
+  /* Honest scoring: every issue lowers the score by its severity, serious problems cap it,
+     and Google's own mobile PageSpeed result counts for 30% once it arrives. */
+  var DED={critical:22,high:9,medium:4,low:1.5};
+  function score(issues,perf){
+    var raw=100,low=0,crit=0,hi=0;
+    issues.forEach(function(i){
+      if(/PageSpeed Performance Score/.test(i.title))return;
+      if(i.sev==='low')low+=DED.low;else raw-=DED[i.sev];
+      if(i.sev==='critical')crit++;if(i.sev==='high')hi++;
+    });
+    raw-=Math.min(low,10);
+    if(crit)raw=Math.min(raw,45-(crit-1)*8);
+    if(hi>=4)raw=Math.min(raw,60);else if(hi>=2)raw=Math.min(raw,75);
+    var sc=raw;
+    if(perf!=null){var p=perf*100;sc=raw*0.7+p*0.3;if(p<50)sc=Math.min(sc,65);}
+    if(crit)sc=Math.min(sc,45-(crit-1)*8);
+    return Math.max(3,Math.min(100,Math.round(sc)));
+  }
+  function perfOf(j){var c=j&&j.lighthouseResult&&j.lighthouseResult.categories;return c&&c.performance&&typeof c.performance.score==='number'?c.performance.score:null;}
   function tagsHtml(){
     var rows=(ST.tags||[]).concat(ST.extraTags||[]);if(!rows.length)return'';
     var h='<div class="tags"><h4>Key SEO Tags Found on This Page</h4>';
@@ -362,14 +383,17 @@
   }
   function render(){
     var issues=ST.issues.concat(ST.site||[],ST.speed||[]);
-    var sc=score(issues),col=sc>=85?'var(--ok)':sc>=60?'var(--warn)':'var(--bad)',grade=sc>=85?'Good':sc>=60?'Needs Work':'Poor';
+    var sc=score(issues,ST.speedOk?ST.perf:null),col=sc>=85?'var(--ok)':sc>=60?'var(--warn)':'var(--bad)',grade=sc>=85?'Good':sc>=60?'Needs Work':'Poor';
     var cnt={critical:0,high:0,medium:0,low:0};issues.forEach(function(i){cnt[i.sev]++;});
     var C=2*Math.PI*54,off=C*(1-sc/100);
     var h='<div class="summary"><div class="ring"><svg viewBox="0 0 132 132" aria-hidden="true"><circle cx="66" cy="66" r="54" fill="none" stroke="#EEF0F3" stroke-width="12"/><circle cx="66" cy="66" r="54" fill="none" stroke="'+col+'" stroke-width="12" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'"/></svg><div class="num" style="color:'+col+'"><span>'+sc+'<small>out of 100</small></span></div></div>';
     h+='<div class="sum-text"><h3>SEO Score: '+grade+'</h3><p>'+esc(ST.url)+'</p><div class="counts">';
     ['critical','high','medium','low'].forEach(function(k){if(cnt[k])h+='<span class="sev-c '+k+'">'+cnt[k]+' '+SEV[k].label+'</span>';});
     if(!issues.length)h+='<span class="c-ok">No issues found in this check</span>';
-    h+='</div></div></div>';
+    h+='</div>';
+    if(ST.speedDone&&!ST.speedOk)h+='<span class="score-partial">Partial score: Google\'s speed test did not respond, so speed is not included</span>';
+    h+='<p class="score-how">How this score works: each issue lowers it by severity, any critical issue keeps it below 50, and Google\'s mobile PageSpeed result counts for 30%.</p>';
+    h+='</div></div>';
     var scope=ST.siteDone?(ST.siteChecked?'this page plus '+ST.siteChecked+' other pages from your XML sitemap'+(ST.siteTotal?' (out of '+ST.siteTotal+' listed)':''):'this page only, because the XML sitemap could not be read'):'this page, while other pages from your XML sitemap are being sampled';
     var speed=ST.speedDone?(ST.speedOk?', with results from Google PageSpeed Insights (mobile)':'. Google PageSpeed Insights did not respond this time, so speed results are missing'):', while Google PageSpeed Insights runs';
     h+='<p class="basic-note">This report covers '+scope+speed+'. '+(ST.note?ST.note+' ':'')+'It cannot see backlinks, keyword rankings or competitors, which a full SEO audit covers.</p>';
@@ -423,13 +447,13 @@
           render();
         }).catch(function(){ST.siteDone=true;render();});
         var j=await speedJob;ST.speedDone=true;ST.speedOk=!!j;
-        if(j){ST.speed=psiIssues(j,true,ST.issues);ST.metrics=metricsHtml(j);}
+        if(j){ST.speed=psiIssues(j,true,ST.issues);ST.metrics=metricsHtml(j);ST.perf=perfOf(j);}
         render();await siteJob;
       }else{
         setStatus('This site blocks direct reading. Running Google\'s Lighthouse checks instead (up to a minute)...');
         var j2=await speedJob;setStatus('');
         if(!j2){fail('The site did not respond to us or to Google\'s test. Check the address is correct and the site is online, then try again.');return;}
-        ST={url:url,issues:[],passed:[],tags:[],extraTags:[],headings:[],site:[],speed:psiIssues(j2,false),metrics:metricsHtml(j2),siteDone:true,speedDone:true,speedOk:true,
+        ST={url:url,issues:[],passed:[],tags:[],extraTags:[],headings:[],site:[],speed:psiIssues(j2,false),metrics:metricsHtml(j2),perf:perfOf(j2),siteDone:true,speedDone:true,speedOk:true,
             note:'This site blocked our direct reader, so this report is based on Google\'s own Lighthouse audits.'};
         render();out.scrollIntoView({behavior:'smooth',block:'start'});
       }
